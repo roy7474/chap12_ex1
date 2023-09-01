@@ -25,10 +25,11 @@ mysock.close()
 import socket
 
 url = input('Please enter the URL of the website you would like to access: ')
-mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    mysock.connect((url, 80))
-    mysock.send('GET url')
+    host = url.split('/')[2]
+    mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    mysock.connect((host, 80))
+    mysock.send('GET ', url, 'HTTP/1.0\n\n')
 
 except:
     print('There was a problem opening this webpage. Please try again!')
@@ -38,6 +39,6 @@ while True:
     data = sock.recv(512)
     if len(data) < 1:
         break
-    print data
+    print(data)
 
 mysock.close()
