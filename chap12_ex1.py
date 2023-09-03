@@ -22,23 +22,25 @@ while True:
 mysock.close()
 '''
 
-import socket
 
+
+
+import socket
 url = input('Please enter the URL of the website you would like to access: ')
 try:
-    host = url.split('/')[2]
+    webp = url.split('/')
+    HOST = webp[2]
+    print('Host: ', HOST)
     mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    mysock.connect((host, 80))
-    mysock.send('GET ', url, 'HTTP/1.0\n\n')
+    mysock.connect((HOST, 80))
+    cmd = ('GET ', url, ' HTTP/1.0\r\n\r\n').encode()
+    mysock.send(cmd)
+    while True:
+        data = mysock.recv(512)
+        if (len(data) < 1):
+            break
+        print(data.decode(), end='')
+    mysock.close()
 
 except:
     print('There was a problem opening this webpage. Please try again!')
-    quit()
-
-while True:
-    data = sock.recv(512)
-    if len(data) < 1:
-        break
-    print(data)
-
-mysock.close()
