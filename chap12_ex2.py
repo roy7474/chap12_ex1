@@ -8,10 +8,12 @@
 # http://data.pr4e.org/mbox.txt
 # http://data.pr4e.org/romeo-full.txt
 # http://data.pr4e.org/mbox-short.txt
+# http://data.pr4e.org/intro.txt
 
 
 import socket
 url = input('Please enter the URL of the website you would like to access: ')
+count = 0
 try:
     webp = url.split('/')
     HOST = webp[2]
@@ -21,11 +23,16 @@ try:
     cmd = ('GET '+ url+ ' HTTP/1.0\r\n\r\n').encode()
     mysock.send(cmd)
     while True:
-        data = mysock.recv(20)
-        if (len(data) < 1):
+        data = mysock.recv(500)
+        for text in data:
+            count +=1
+        if len(data) < 1 or count >= 3000:
             break
-        print(data.decode(), end='')
+        print(data.decode())#, end='')
+    print('The total number of characters is: ', count)    
     mysock.close()
+    
+
 
 except:
     print('There was a problem opening this webpage. Please try again!')
